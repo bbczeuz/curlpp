@@ -1,12 +1,17 @@
 project(curlpp)
 cmake_minimum_required(VERSION 2.8)
 
-if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 2.9)
+if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 2.8)
 	#FIXME: Better use 'target_compile_features' instead of CXX_STANDARD
+	message(STATUS "Cmake version 2.9 or newer")
 	set(CMAKE_CXX_STANDARD 11) # C++11...
 	set(CMAKE_CXX_STANDARD_REQUIRED ON) #...is required...
 	set(CMAKE_CXX_EXTENSIONS OFF) #...without compiler extensions like gnu++11
+
+	#Debian8: probably needed 
+	add_definitions(-std=c++11)
 elseif (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREATER 2.7)
+	message(STATUS "Cmake version 2.8 or older")
 	#XXX: This could work for even older cmake versions, too, but is not tested
 	add_definitions(-std=c++11)
 	add_definitions(-g)
@@ -14,7 +19,6 @@ else()
 	#We shouldn't arrive here due to cmake_minimum_required
 	message(FATAL_ERROR "Cmake version not supported")
 endif()
-
 
 set(CURLPP_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CURLPP_BINARY_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
@@ -41,6 +45,7 @@ message(STATUS "\tInputs to be built as standalone examples are at: ${ExamplesFo
 
 #########################################################################################
 # Install folders
+#Paths are relative to CMAKE_INSTALL_PREFIX
 if (NOT LIB_INSTALL_DIR)
 	set(LIB_INSTALL_DIR lib)
 endif ()
